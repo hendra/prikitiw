@@ -10,4 +10,7 @@ class ApplicationController < ActionController::Base
   filter_parameter_logging :password
 
   include AuthenticatedSystem
+  # You can move this into a different controller, if you wish.  This module gives you the require_role helpers, and others.
+  include RoleRequirementSystem
+
 end
