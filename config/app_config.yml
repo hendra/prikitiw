@@ -1,0 +1,29 @@
+defaults: &defaults
+  app_name: Prikitiw
+  domain: prikitiw.com
+  email: do-not-reply@prikitiw.com
+  paginate: 10
+  aws:
+    access_key: YOUR_AWS_ACCESS_KEY
+    secret_key: YOUR_AWS_SECRET_KEY
+
+
+development:
+  <<: *defaults
+  server_url: http://localhost:3000
+
+staging:
+  <<: *defaults
+  server_url: http://localhost:3000
+
+test:
+  <<: *defaults
+  server_url: http://localhost:3000
+
+cucumber:
+  <<: *defaults
+  server_url: http://localhost:3000
+
+production:
+  <<: *defaults
+  server_url: http://www.prikitiw.com
