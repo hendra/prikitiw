@@ -1,0 +1,33 @@
+<div class="container">
+
+  <div id="login_content" data-state="username" >
+    <div class="dialog_contents">
+
+      <div class="login_dialog clearfix">
+        <div class="form">
+
+          <% form_for @password do |f| %>
+            <div id="user_name_login" class="login_type">
+              <h1>Sign in to <strong>MarketFu</strong></h1>
+              <p><%= f.text_field :email %></p>
+            </div>
+
+            <div id="signin_button">
+              <%= image_submit_tag "btn_sign-in.png" %> | <%= link_to "Login", root_path %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div id="other_products">
+
+      <div>
+        <ul>
+          <li><%= link_to "Don't have a MarketFu account? <strong>Sign up today</strong>", signup_path %></li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+

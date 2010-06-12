@@ -2,6 +2,8 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
+  include ExceptionNotification::Notifiable
+
   layout 'default'
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
@@ -10,7 +12,5 @@ class ApplicationController < ActionController::Base
   filter_parameter_logging :password
 
   include AuthenticatedSystem
-  # You can move this into a different controller, if you wish.  This module gives you the require_role helpers, and others.
   include RoleRequirementSystem
-
 end

@@ -1,12 +1,12 @@
 defaults: &defaults
   app_name: Prikitiw
-  domain: prikitiw.com
-  email: do-not-reply@prikitiw.com
+  domain_name: prikitiw.com
+  site_url: http://www.prikitiw.com
+  admin_email: do-not-reply@prikitiw.com
   paginate: 10
   aws:
     access_key: YOUR_AWS_ACCESS_KEY
     secret_key: YOUR_AWS_SECRET_KEY
-
 
 development:
   <<: *defaults
@@ -14,7 +14,7 @@ development:
 
 staging:
   <<: *defaults
-  server_url: http://localhost:3000
+  server_url: http://prikitiw.41studio.com
 
 test:
   <<: *defaults

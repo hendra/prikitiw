@@ -1,0 +1,16 @@
+<h1>Show</h1>
+
+<p><%= label_tag 'username' %><br/>
+<%=h @user.login %></p>
+
+<p><%= label_tag 'first_name' %><br/>
+<%=h @user.first_name %></p>
+
+<p><%= label_tag 'last_name' %><br/>
+<%=h @user.last_name %></p>
+
+<p><%= label_tag 'email' %><br/>
+<%=h @user.email %></p>
+
+<%= link_to "Back", dashboard_index_path %> |
+<%= link_to "Edit", edit_user_path(@user) %>

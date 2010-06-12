@@ -2,12 +2,15 @@ class CreateAdminUser < ActiveRecord::Migration
   def self.up
     user = User.new do |u|
       u.login                 = 'admin'
-      u.name                  = 'admin'
-      u.email                 = 'admin@prikitiw.com'
+      u.first_name            = 'admin'
+      u.last_name             = 'admin'
+      u.email                 = "admin@#{AppConfig.domain_name}"
       u.password              = 'secret'
       u.password_confirmation = 'secret'
+      u.state                 = 'active'
     end
 
+    user.roles << Role.first
     user.save!
   end
 

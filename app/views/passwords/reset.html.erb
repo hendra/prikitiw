@@ -1,0 +1,13 @@
+<%= title "Reset Your Password", :h2 %>
+<% semantic_form_for(:user, @user, :url => { :action => 'update_after_forgetting' }) do |f| %>
+  <%= f.error_messages %>
+  <p>Please enter a new password and confirm it.</p>
+  <% f.inputs :name => 'Update Password' do %>
+    <%= f.input :password %>
+    <%= f.input :password_confirmation %>
+  <% end %>
+  <%= hidden_field_tag :reset_code, params[:reset_code] %>
+  <% f.buttons do %>
+    <%= f.commit_button 'Submit' %>
+  <% end %>
+<% end %>
