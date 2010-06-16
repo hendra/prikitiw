@@ -1,52 +1,50 @@
 class PasswordsController < ApplicationController
-  layout 'authorization'
+  require 'active_support/secure_random'
 
-  def new
-    @password = Password.new
+  def forgot_password
+    
   end
 
-  def create
-    @password = Password.new(params[:password])
-    @password.user = User.find_by_email(@password.email)
+  def create_reset_code
+    @user = User.find_by_email(params[:email])
 
-    if @password.save
-      PasswordMailer.deliver_forgot_password(@password)
-      flash[:notice] = "A link to change your password has been sent to #{@password.email}."
-      redirect_to :action => :new
+    if @user
+      @user.create_reset_password_code
+
+      flash[:notice] = "We're sending you an email with code to change your password."
+      redirect_to '/'
     else
-      render :action => :new
+      flash[:error] = 'The email is not registered.'
+      render :action => 'forgot_password'
     end
   end
 
-  def reset
-    begin
-      @user = Password.find(:first, :conditions => ['reset_code = ? and expiration_date > ?', params[:reset_code], Time.now]).user
-    rescue
-      flash[:notice] = 'The change password URL you visited is either invalid or expired.'
-      redirect_to new_password_path
-    end
-  end
+  def change_password
+    @user = User.find_by_reset_password_code(params[:reset_password_code])
 
-  def update_after_forgetting
-    @user = Password.find_by_reset_code(params[:reset_code]).user
-
-    if @user.update_attributes(params[:user])
-      flash[:success] = 'Password was successfully updated.'
-      redirect_to login_path
-    else
-      flash[:notice] = 'EPIC FAIL!'
-      redirect_to :action => :reset, :reset_code => params[:reset_code]
+    unless @user
+      flash[:error] = 'The reset password code you entered is invalid'
+      redirect_to '/'
     end
   end
 
   def update
-    @password = Password.find(params[:id])
+    @user = User.find(params[:id])
 
-    if @password.update_attributes(params[:password])
-      flash[:success] = 'Password was successfully updated.'
-      redirect_to(@password)
+    if params[:user][:password].blank?
+      flash[:error] = "Failed to update your password"
+      render :action => 'change_password'
     else
-      render :action => :edit
+      if @user.update_attributes(params[:user])
+        @user.update_attribute(:reset_password_code, nil)
+        UserMailer.deliver_update_password_notification(@user)
+
+        flash[:notice] = "Your password successfully updated."
+        redirect_to login_url
+      else
+        flash[:error] = "Failed to update your password"
+        render :action => 'change_password'
+      end
     end
   end
 end

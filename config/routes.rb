@@ -6,8 +6,9 @@ ActionController::Routing::Routes.draw do |map|
   map.register '/register', :controller => 'users', :action => 'create'
   map.signup '/signup', :controller => 'users', :action => 'new'
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate', :activation_code => nil
-  map.forgot_password '/forgot_password', :controller => 'passwords', :action => 'new'
-  map.change_password '/change_password/:reset_code', :controller => 'passwords', :action => 'reset'
+  map.forgot_password '/forgot_password', :controller => 'passwords', :action => 'forgot_password'
+  map.create_reset_code '/create_reset_code', :controller => 'passwords', :action => 'create_reset_code'
+  map.change_password '/change_password/:reset_password_code', :controller => 'passwords', :action => 'change_password'
   
   map.resources :users
   map.resources :passwords
