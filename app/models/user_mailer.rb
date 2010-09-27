@@ -11,15 +11,20 @@ class UserMailer < ActionMailer::Base
     @body[:url] = "http://#{AppConfig.site_url}"
   end
 
-  def forgot_password(password)
-    setup_email(password.user)
+  def forgot_password(user)
+    setup_email(user)
     @subject << 'You have requested to change your password'
-    @body[:url] = "#{AppConfig.site_url}/change_password/#{password.reset_code}"
+    @body[:url] = "http://#{AppConfig.site_url}/change_password/#{user.reset_password_code}"
   end
 
   def reset_password(user)
     setup_email(user)
-    @subject << 'Your password has been reset.'
+    @subject << 'You have requested to change your password'
+  end
+
+  def update_password_notification(user)
+    setup_email(user)
+    @subject << 'Your password successfully updated'
   end
 
   protected

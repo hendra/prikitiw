@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :login_required, :except => [:create, :activate]
+  before_filter :login_required, :except => [:new, :create, :activate]
   before_filter :find_user, :only => [:show, :edit, :update]
 
   def index
@@ -23,7 +23,7 @@ class UsersController < ApplicationController
       redirect_to @user
     else
       flash.now[:error]  = "We couldn't set up that account, sorry.  Please try again."
-      render :action => 'new'
+      render :action => 'edit'
     end
   end
 
@@ -41,8 +41,8 @@ class UsersController < ApplicationController
       # Protects against session fixation attacks, causes request forgery
       # protection if visitor resubmits an earlier form using back
       # button. Uncomment if you understand the tradeoffs.
-      reset session
-      self.current_user = @user # !! now logged in
+      # reset session
+      
       flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."
       redirect_back_or_default('/')
     else
@@ -55,7 +55,7 @@ class UsersController < ApplicationController
     logout_keeping_session!
     user = User.find_by_activation_code(params[:activation_code]) unless params[:activation_code].blank?
     case
-    when (!params[:activation_code].blank?) && user && !user.active?
+    when (!params[:activation_code].blank?) && user && !user.recently_activated?
       user.activate!
       flash[:notice] = "Signup complete! Please sign in to continue."
       redirect_to login_path
